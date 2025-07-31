@@ -1,0 +1,52 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: knative-rbac
+spec:
+  resourceSelectors:
+    # Knative ClusterRoles
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-activator-cluster
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-aggregated-addressable-resolver
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-addressable-resolver
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-namespaced-admin
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-namespaced-edit
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-namespaced-view
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-core
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-podspecable-binding
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-admin
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: knative-serving-istio
+    # Knative ClusterRoleBindings
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: knative-serving-controller-admin
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: knative-serving-controller-addressable-resolver
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: knative-serving-activator-cluster
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

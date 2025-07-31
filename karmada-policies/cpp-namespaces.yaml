@@ -1,0 +1,28 @@
+# karmada-policies/cpp-namespaces.yaml
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: knative-namespaces
+spec:
+  resourceSelectors:
+    - apiVersion: v1
+      kind: Namespace
+      name: knative-serving
+    - apiVersion: v1
+      kind: Namespace
+      name: istio-system
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: knative-serving
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: istio-system

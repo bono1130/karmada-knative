@@ -1,0 +1,31 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: istio-rbac
+spec:
+  resourceSelectors:
+    # Istio ClusterRoles
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: istio-reader-clusterrole-istio-system
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: istiod-clusterrole-istio-system
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRole
+      name: istiod-gateway-controller-istio-system
+    # Istio ClusterRoleBindings
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: istio-reader-clusterrole-istio-system
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: istiod-clusterrole-istio-system
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: ClusterRoleBinding
+      name: istiod-gateway-controller-istio-system
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

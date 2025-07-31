@@ -1,0 +1,35 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: ClusterPropagationPolicy
+metadata:
+  name: webhook-configurations
+spec:
+  resourceSelectors:
+    # Knative Webhooks
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: config.webhook.serving.knative.dev
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: MutatingWebhookConfiguration
+      name: webhook.serving.knative.dev
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: validation.webhook.serving.knative.dev
+    # Istio Webhooks
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: istio-validator-istio-system
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: MutatingWebhookConfiguration
+      name: istio-sidecar-injector
+    # Net-Istio Webhooks
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: MutatingWebhookConfiguration
+      name: webhook.istio.networking.internal.knative.dev
+    - apiVersion: admissionregistration.k8s.io/v1
+      kind: ValidatingWebhookConfiguration
+      name: config.webhook.istio.networking.internal.knative.dev
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

@@ -1,0 +1,18 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: default-domain
+  namespace: knative-serving
+spec:
+  resourceSelectors:
+    - apiVersion: batch/v1
+      kind: Job
+      name: default-domain
+    - apiVersion: v1
+      kind: Service
+      name: default-domain-service
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

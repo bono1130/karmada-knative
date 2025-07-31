@@ -1,0 +1,87 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: knative-core
+  namespace: knative-serving
+spec:
+  resourceSelectors:
+    # Deployments
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: activator
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: autoscaler
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: controller
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: webhook
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: autoscaler-hpa
+    # Services
+    - apiVersion: v1
+      kind: Service
+      name: activator-service
+    - apiVersion: v1
+      kind: Service
+      name: autoscaler
+    - apiVersion: v1
+      kind: Service
+      name: controller
+    - apiVersion: v1
+      kind: Service
+      name: webhook
+    - apiVersion: v1
+      kind: Service
+      name: autoscaler-hpa
+    # ConfigMaps
+    - apiVersion: v1
+      kind: ConfigMap
+      namespace: knative-serving
+    # ServiceAccounts
+    - apiVersion: v1
+      kind: ServiceAccount
+      name: controller
+    - apiVersion: v1
+      kind: ServiceAccount
+      name: activator
+    # Roles and RoleBindings
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      name: knative-serving-activator
+    - apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      name: knative-serving-activator
+    # HorizontalPodAutoscalers
+    - apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      name: activator
+    - apiVersion: autoscaling/v2
+      kind: HorizontalPodAutoscaler
+      name: webhook
+    # PodDisruptionBudgets
+    - apiVersion: policy/v1
+      kind: PodDisruptionBudget
+      name: activator-pdb
+    - apiVersion: policy/v1
+      kind: PodDisruptionBudget
+      name: webhook-pdb
+    # Secrets
+    - apiVersion: v1
+      kind: Secret
+      name: webhook-certs
+    # Knative Custom Resources
+    - apiVersion: networking.internal.knative.dev/v1alpha1
+      kind: Certificate
+      name: routing-serving-certs
+    - apiVersion: caching.internal.knative.dev/v1alpha1
+      kind: Image
+      name: queue-proxy
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2

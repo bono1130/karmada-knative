@@ -1,0 +1,47 @@
+apiVersion: policy.karmada.io/v1alpha1
+kind: PropagationPolicy
+metadata:
+  name: net-istio-components
+  namespace: knative-serving
+spec:
+  resourceSelectors:
+    # Deployments
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: net-istio-controller
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: net-istio-webhook
+    # Services
+    - apiVersion: v1
+      kind: Service
+      name: net-istio-webhook
+    - apiVersion: v1
+      kind: Service
+      name: knative-local-gateway
+    # ConfigMaps
+    - apiVersion: v1
+      kind: ConfigMap
+      name: config-istio
+    # Secrets
+    - apiVersion: v1
+      kind: Secret
+      name: net-istio-webhook-certs
+    # Istio Custom Resources
+    - apiVersion: networking.istio.io/v1beta1
+      kind: Gateway
+      name: knative-ingress-gateway
+    - apiVersion: networking.istio.io/v1beta1
+      kind: Gateway
+      name: knative-local-gateway
+    - apiVersion: security.istio.io/v1beta1
+      kind: PeerAuthentication
+      name: webhook
+    - apiVersion: security.istio.io/v1beta1
+      kind: PeerAuthentication
+      name: net-istio-webhook
+  placement:
+    clusterAffinity:
+      clusterNames:
+        - member1
+        - member2
