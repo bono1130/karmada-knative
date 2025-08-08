@@ -36,6 +36,10 @@ spec:
     - apiVersion: security.istio.io/v1beta1
       kind: PeerAuthentication
       name: net-istio-webhook
+    # Secrets
+    - apiVersion: v1
+      kind: Secret
+      name: net-istio-webhook-certs
   placement:
     clusterAffinity:
       clusterNames:
